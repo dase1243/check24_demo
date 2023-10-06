@@ -153,7 +153,7 @@ export const OffersLoadingPage = () => {
                 <h1 style={styles.heading}>We are negotiating the best price for you</h1>
                 <div style={styles.loadingContainer}>
                     <h1>
-                        The lowest bid is ${currentPrice.toFixed(2)}
+                        The lowest bid is {currentPrice.toFixed(2)}€
                     </h1>
                     <div style={{...styles.loadingBar, width: `${loadingCompletion}%`}}></div>
                 </div>
