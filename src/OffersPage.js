@@ -71,7 +71,7 @@ export const OffersPage = () => {
                 {/*/>*/}
 
                 <OfferItem
-                    imageUrl="https://avatars.githubusercontent.com/u/97165289"
+                    imageUrl={bestOffer.providerImage}
                     providerName={bestOffer.providerName}
                     recommendation={bestOffer.providerSatisfaction}
                     renewable={bestOffer.type_offer}
