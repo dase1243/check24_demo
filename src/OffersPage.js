@@ -92,7 +92,7 @@ export const OffersPage = () => {
                         {bestOffers.map((bf, index) => (
                             <OfferItemGrey
                                 key={index}
-                                imageUrl="https://avatars.githubusercontent.com/u/97165289"
+                                imageUrl={bf.providerImage}
                                 providerName={bf.providerName}
                                 recommendation={bf.providerSatisfaction}
                                 renewable={bf.type_offer}
