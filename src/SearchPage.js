@@ -21,7 +21,9 @@ export const SearchPage = () => {
 
     useEffect(() => {
         const storedSearches = localStorage.getItem('recentSearches');
+        console.log(`storedSearches: ${storedSearches}`)
         if (storedSearches) {
+            console.log(`setting searchHistory ${JSON.parse(storedSearches)}`);
             setSearchHistory(JSON.parse(storedSearches));
         }
     }, []);
@@ -29,6 +31,8 @@ export const SearchPage = () => {
     const addSearch = (searchTerm) => {
         setSearchHistory(prevSearches => {
             const newSearches = [...prevSearches, searchTerm];
+            console.log(`newSearches ${newSearches}`);
+
             localStorage.setItem('recentSearches', JSON.stringify(newSearches));
             return newSearches;
         });
@@ -40,9 +44,12 @@ export const SearchPage = () => {
             return;
         }
 
-        addSearch(inputValue);
+        await addSearch(inputValue);
 
         setError('');
+
+        console.log(`storing the recentSearches:`);
+        console.log(`last inputValue: ${inputValue}`);
 
         localStorage.setItem('lastSearch', JSON.stringify(inputValue));
 
