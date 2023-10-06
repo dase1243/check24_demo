@@ -56,17 +56,18 @@ const styles = {
     },
 };
 
-function OfferItem({ imageUrl, recommendation, renewable, tariffName, price}) {
+function OfferItem({ imageUrl, providerName, recommendation, renewable, tariffName, price}) {
     return (
         <div style={styles.mainContainer}>
             <div style={styles.innerContainer}>
                 <div style={{ ...styles.imageContainer, backgroundImage: `url(${imageUrl})` }}></div>
                 <div style={styles.smallDiv}>
+                    <p>{providerName}</p>
                     <p>{recommendation}</p>
                     <p>{renewable}</p>
                 </div>
                 <div style={styles.smallDiv}>
-                    <p>{price}</p>
+                    <p>{price}€</p>
                 </div>
             </div>
             <div style={styles.footer}>

@@ -21,6 +21,7 @@ export const ParametersPage = () => {
     const [postcodeError, setPostcodeError] = useState('');
 
     const handlePostcodeChange = (e) => {
+        localStorage.setItem('postcode', Number(e.target.value));
         setPostcode(e.target.value);
     };
 
@@ -33,7 +34,7 @@ export const ParametersPage = () => {
     };
 
     const handleSubmit = async () => {
-        if (postcode.length < 5 || /^[A-Za-z]+$/.test(postcode)) {
+        if (postcode.length < 4 || /^[A-Za-z]+$/.test(postcode)) {
             setPostcodeError('Input should be at least 3 symbols and there should be no digits or symbols');
             return;
         }

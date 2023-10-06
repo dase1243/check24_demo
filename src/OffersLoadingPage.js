@@ -5,22 +5,93 @@ import './index.css';
 import {useNavigate} from "react-router-dom";
 import ItemGenerator from "./ItemGenerator";
 import OfferItem from "./OfferItem";
+import axios from "axios";
+import {data} from "./data";
+
+function getBestOffers(data, myPostcode) {
+    // Step 1: Flatten the array
+    let flattened = [];
+    data.forEach(provider => {
+        provider.offers.forEach(offer => {
+            flattened.push({
+                ...offer,
+                providerName: provider.name,
+                providerImage: provider.image,
+                providerZip: provider.zip_code,
+                providerSatisfaction: provider.satisfaction
+            });
+        });
+    });
+
+    console.log(`myPostcode: ${myPostcode}`)
+    // Step 3: Sort by postcode proximity
+    flattened.sort((a, b) => {
+        const diffA = Math.abs(myPostcode - a.providerZip);
+        const diffB = Math.abs(myPostcode - b.providerZip);
+        return diffA - diffB;
+    });
+
+    // Step 2: Sort by price
+    flattened.sort((a, b) => a.satisfaction - b.satisfaction);
+
+    return flattened.slice(0, 10);
+
+    // Step 2: Sort by price
+    flattened.sort((a, b) => a.price - b.price);
+
+    // Step 4: Get the top 3
+    return flattened.slice(0, 7);
+}
 
 export const OffersLoadingPage = () => {
-    const targetPrice = Math.floor(Math.random() * (350 - 108 + 1) + 108);  // This would be your actual target price value.
+    // const targetPrice = getBestOffers(, myPostcode);  // This would be your actual target price value.
 
     const [loadingCompletion, setLoadingCompletion] = useState(0);
     const [currentPrice, setCurrentPrice] = useState(999);
+    const [bestPrice, setBestPrice] = useState(-1);
+    const [bestOffer, setBestOffer] = useState([]);
+    const [bestOffers, setBestOffers] = useState([]);
     const duration = 5000;
     const navigate = useNavigate();
     const [openTitle, setOpenTitle] = useState(false);
 
     useEffect(() => {
+        // const response = await axios.get('https://idea-hack.vercel.app/suppliers');
+        // const response = data;
+
+        // const data = response.data;
+
+        console.log("data:", data)
+
+        const postcode = localStorage.getItem('postcode') || 1234;
+        let bestOffers = getBestOffers(data, Number(postcode));
+
+        console.log("bestOffers:", bestOffers)
+        setBestOffers(bestOffers);
+
+        const bestOffer = bestOffers.reduce((prev, curr) => {
+            return (prev.price < curr.price) ? prev : curr;
+        });
+        setBestOffer(bestOffer);
+
+        console.log("bestOffer:", bestOffer.price)
+
+        setBestPrice(() => bestOffer.price);
+        if (currentPrice < bestOffer.price) {
+            setCurrentPrice(bestOffer.price);
+        }
+    }, [currentPrice]);
+
+    // if (loading) return <div>Loading...</div>;
+    // if (error) return <div>Error: {error}</div>;
+
+
+    useEffect(() => {
         console.log('rerendering');
         const priceDecreaseInterval = setInterval(() => {
             setCurrentPrice(prevPrice => {
-                if (prevPrice > targetPrice + 20) {
-                    return prevPrice - Math.random() * 75; // Decrement by $5 every 50ms
+                if (prevPrice > bestPrice) {
+                    return prevPrice - Math.random() * 35; // Decrement by $5 every 50ms
                 } else {
                     clearInterval(priceDecreaseInterval);
                 }
@@ -31,17 +102,17 @@ export const OffersLoadingPage = () => {
         const priceJumpInterval = setTimeout(() => {
             let jumpTimes = 5;
             const jump = setInterval(() => {
-                setCurrentPrice(prevPrice => prevPrice - (Math.random() * 75)); // Random jump between -5 and 5
+                setCurrentPrice(bestPrice); // Random jump between -5 and 5
 
                 jumpTimes--;
                 if (jumpTimes === 0) {
                     clearInterval(jump);
-                    setCurrentPrice(targetPrice); // Set to the final target price
+                    setCurrentPrice(bestPrice); // Set to the final target price
                 }
             }, 50);
 
             setOpenTitle(true);
-        }, 4000); // Start jumping around 4 seconds into the 5-second duration
+        }, 2000); // Start jumping around 4 seconds into the 5-second duration
 
         return () => {
             clearInterval(priceDecreaseInterval);
@@ -63,7 +134,11 @@ export const OffersLoadingPage = () => {
         return () => clearInterval(interval);
     }, []);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        localStorage.setItem('bestPrice', JSON.stringify(bestPrice));
+        localStorage.setItem('bestOffer', JSON.stringify(bestOffer));
+        localStorage.setItem('bestOffers', JSON.stringify(bestOffers));
+
         navigate('/offers-page'); // Navigate to the next page
     };
 
@@ -78,7 +153,7 @@ export const OffersLoadingPage = () => {
                 <h1 style={styles.heading}>We are negotiating the best price for you</h1>
                 <div style={styles.loadingContainer}>
                     <h1>
-                        The price we could come up with ${currentPrice.toFixed(2)}
+                        The lowest bid is ${currentPrice.toFixed(2)}
                     </h1>
                     <div style={{...styles.loadingBar, width: `${loadingCompletion}%`}}></div>
                 </div>

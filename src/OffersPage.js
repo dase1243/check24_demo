@@ -3,12 +3,14 @@ import React from "react";
 import {useState, useEffect} from 'react';
 import './index.css';
 import {useNavigate} from "react-router-dom";
-import ItemGenerator from "./ItemGenerator";
 import OfferItem from "./OfferItem";
 
 export const OffersPage = () => {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
+    const [bestPrice, setBestPrice] = useState('');
+    const [bestOffer, setBestOffer] = useState([]);
+    const [bestOffers, setBestOffers] = useState([]);
 
     const handleSubmit = async () => {
         navigate('/'); // Navigate to the next page
@@ -25,6 +27,32 @@ export const OffersPage = () => {
         fontSize: '18px'
     };
 
+    useEffect(() => {
+        const bestPrice = localStorage.getItem('bestPrice');
+        const bestOffers = localStorage.getItem('bestOffers');
+        const bestOffer = localStorage.getItem('bestOffer');
+        const bestOffersLength = localStorage.getItem('bestOffersLength') || 7;
+        if (bestPrice) {
+            setBestPrice(JSON.parse(bestPrice));
+        }
+        if (bestOffer) {
+            setBestOffer(JSON.parse(bestOffer));
+        }
+        if (bestOffers) {
+            setBestOffers(JSON.parse(bestOffers).slice(0, bestOffersLength - 1));
+        }
+
+    }, []);
+
+    // return (
+    //     <ul>
+    //         {data.map(item => (
+    //             <li key={item.id}>{item.name}</li>
+    //         ))}
+    //     </ul>
+    // );
+
+
     return (
         <div style={styles.container}>
             <div style={styles.scrollableSection}>
@@ -34,12 +62,21 @@ export const OffersPage = () => {
 
                 <h1 style={styles.heading}>Your Best Offer</h1>
 
+                {/*<OfferItem*/}
+                {/*    imageUrl="https://avatars.githubusercontent.com/u/97165289"*/}
+                {/*    recommendation="82% Recommendation"*/}
+                {/*    renewable="100% renewable"*/}
+                {/*    tariffName="Tariff eprimoStrom PrimaKlima"*/}
+                {/*    price="100$"*/}
+                {/*/>*/}
+
                 <OfferItem
                     imageUrl="https://avatars.githubusercontent.com/u/97165289"
-                    recommendation="82% Recommendation"
-                    renewable="100% renewable"
-                    tariffName="Tariff eprimoStrom PrimaKlima"
-                    price="100$"
+                    providerName={bestOffer.providerName}
+                    recommendation={bestOffer.providerSatisfaction}
+                    renewable={bestOffer.type_offer}
+                    tariffName={bestOffer.name}
+                    price={bestOffer.price}
                 />
 
                 <button
@@ -51,14 +88,16 @@ export const OffersPage = () => {
 
                 {isOpen && (
                     <div style={styles.offersList}>
-                        {Array.from({length: 10}).map((_, index) => (
+                        {/*{Array.from({length: 10}).map((_, index) => (*/}
+                        {bestOffers.map((bf, index) => (
                             <OfferItem
                                 key={index}
                                 imageUrl="https://avatars.githubusercontent.com/u/97165289"
-                                recommendation={`Some text ${index + 1}`}
-                                renewable={`Another text ${index + 1}`}
-                                tariffName={`More text ${index + 1}`}
-                                price="100$"
+                                providerName={bf.providerName}
+                                recommendation={bf.providerSatisfaction}
+                                renewable={bf.type_offer}
+                                tariffName={bf.name}
+                                price={bf.price}
                             />
                         ))}
                     </div>
