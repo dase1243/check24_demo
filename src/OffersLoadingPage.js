@@ -4,14 +4,16 @@ import {useState, useEffect} from 'react';
 import './index.css';
 import {useNavigate} from "react-router-dom";
 import ItemGenerator from "./ItemGenerator";
+import OfferItem from "./OfferItem";
 
 export const OffersLoadingPage = () => {
-    const targetPrice = Math.floor(Math.random() * (350 - 75 + 1) + 75);  // This would be your actual target price value.
+    const targetPrice = Math.floor(Math.random() * (350 - 108 + 1) + 108);  // This would be your actual target price value.
 
     const [loadingCompletion, setLoadingCompletion] = useState(0);
     const [currentPrice, setCurrentPrice] = useState(999);
     const duration = 5000;
     const navigate = useNavigate();
+    const [openTitle, setOpenTitle] = useState(false);
 
     useEffect(() => {
         console.log('rerendering');
@@ -37,6 +39,8 @@ export const OffersLoadingPage = () => {
                     setCurrentPrice(targetPrice); // Set to the final target price
                 }
             }, 50);
+
+            setOpenTitle(true);
         }, 4000); // Start jumping around 4 seconds into the 5-second duration
 
         return () => {
@@ -78,7 +82,10 @@ export const OffersLoadingPage = () => {
                     </h1>
                     <div style={{...styles.loadingBar, width: `${loadingCompletion}%`}}></div>
                 </div>
-                <ItemGenerator />
+                <ItemGenerator/>
+                {openTitle && (
+                    <h1 style={styles.heading}>The offers are calculated</h1>
+                )}
             </div>
             <div style={styles.footer}>
                 <button style={styles.nextButton} onClick={handleSubmit}>Next</button>

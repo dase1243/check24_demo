@@ -18,6 +18,7 @@ export const ParametersPage = () => {
     const [selectedRecommendation, setSelectedRecommendation] = useState('');
     const [contractTerm, setContractTerm] = useState('');
     const navigate = useNavigate();
+    const [postcodeError, setPostcodeError] = useState('');
 
     const handlePostcodeChange = (e) => {
         setPostcode(e.target.value);
@@ -32,6 +33,12 @@ export const ParametersPage = () => {
     };
 
     const handleSubmit = async () => {
+        if (postcode.length < 5 || /^[A-Za-z]+$/.test(postcode)) {
+            setPostcodeError('Input should be at least 3 symbols and there should be no digits or symbols');
+            return;
+        }
+
+
         navigate('/offers-loading-page'); // Navigate to the next page
     };
 
@@ -62,11 +69,13 @@ export const ParametersPage = () => {
                         style={styles.icon}
                     />
                 </div>
+                {postcodeError && <p style={{color: 'red'}}>{postcodeError}</p>}
+
                 <div style={styles.inputWrapper}>
                     <input
                         type="text"
                         value={city}
-                        placeholder="City"
+                        placeholder="Number of m^2"
                         onChange={handleCityChange}
                         style={{
                             ...styles.postcodeInput,
@@ -83,7 +92,7 @@ export const ParametersPage = () => {
                     <input
                         type="text"
                         value={usage}
-                        placeholder="Usage"
+                        placeholder="Number of people"
                         onChange={handleUsageChange}
                         style={{
                             ...styles.postcodeInput,
@@ -102,33 +111,43 @@ export const ParametersPage = () => {
                 </div>
 
                 <div style={styles.radioButtons}>
-                    <button
-                        style={{
-                            ...styles.radioButton,
-                            borderColor: selectedPower === 'option1' ? '#5B90E7' : '#C3DAFF'
-                        }}
-                        onClick={() => setSelectedPower('option1')}
-                    >
-                        <img src={RenewIcon} alt="Description" style={styles.imageInsideButton}/>
-                    </button>
-                    <button
-                        style={{
-                            ...styles.radioButton,
-                            borderColor: selectedPower === 'option2' ? '#5B90E7' : '#C3DAFF'
-                        }}
-                        onClick={() => setSelectedPower('option2')}
-                    >
-                        <img src={PlanetIcon} alt="Description" style={styles.imageInsideButton}/>
-                    </button>
-                    <button
-                        style={{
-                            ...styles.radioButton,
-                            borderColor: selectedPower === 'option3' ? '#5B90E7' : '#C3DAFF'
-                        }}
-                        onClick={() => setSelectedPower('option3')}
-                    >
-                        <img src={BioIcon} alt="Description" style={styles.imageInsideButton}/>
-                    </button>
+                    <div style={styles.btmDiv}>
+                        <button
+                            style={{
+                                ...styles.radioButton,
+                                borderColor: selectedPower === 'option1' ? '#5B90E7' : '#C3DAFF'
+                            }}
+                            onClick={() => setSelectedPower('option1')}
+                        >
+                            <img src={RenewIcon} alt="Description" style={styles.imageInsideButton}/>
+                        </button>
+                        Egal
+                    </div>
+                    <div style={styles.btmDiv}>
+
+                        <button
+                            style={{
+                                ...styles.radioButton,
+                                borderColor: selectedPower === 'option2' ? '#5B90E7' : '#C3DAFF'
+                            }}
+                            onClick={() => setSelectedPower('option2')}
+                        >
+                            <img src={PlanetIcon} alt="Description" style={styles.imageInsideButton}/>
+                        </button>
+                        Alle Ökotarife
+                    </div>
+                    <div style={styles.btmDiv}>
+                        <button
+                            style={{
+                                ...styles.radioButton,
+                                borderColor: selectedPower === 'option3' ? '#5B90E7' : '#C3DAFF'
+                            }}
+                            onClick={() => setSelectedPower('option3')}
+                        >
+                            <img src={BioIcon} alt="Description" style={styles.imageInsideButton}/>
+                        </button>
+                        Nur Öko Nachhaltig
+                    </div>
                 </div>
 
                 <div style={styles.radioWrapper}>
@@ -145,24 +164,32 @@ export const ParametersPage = () => {
                     >
                         No matter
                     </button>
-                    <button
-                        style={{
-                            ...styles.radioButton,
-                            borderColor: selectedRecommendation === 'sad' ? '#5B90E7' : '#C3DAFF'
-                        }}
-                        onClick={() => setSelectedRecommendation('sad')}
-                    >
-                        <img src={SadIcon} alt="Description" style={styles.imageInsideButton}/>
-                    </button>
-                    <button
-                        style={{
-                            ...styles.radioButton,
-                            borderColor: selectedRecommendation === 'happy' ? '#5B90E7' : '#C3DAFF'
-                        }}
-                        onClick={() => setSelectedRecommendation('happy')}
-                    >
-                        <img src={SmileIcon} alt="Description" style={styles.imageInsideButton}/>
-                    </button>
+                    <div style={styles.btmDiv}>
+
+                        <button
+                            style={{
+                                ...styles.radioButton,
+                                borderColor: selectedRecommendation === 'sad' ? '#5B90E7' : '#C3DAFF'
+                            }}
+                            onClick={() => setSelectedRecommendation('sad')}
+                        >
+                            <img src={SadIcon} alt="Description" style={styles.imageInsideButton}/>
+                        </button>
+                        Mind. 70%
+                    </div>
+                    <div style={styles.btmDiv}>
+                        <button
+                            style={{
+                                ...styles.radioButton,
+                                borderColor: selectedRecommendation === 'happy' ? '#5B90E7' : '#C3DAFF'
+                            }}
+                            onClick={() => setSelectedRecommendation('happy')}
+                        >
+                            <img src={SmileIcon} alt="Description" style={styles.imageInsideButton}/>
+                        </button>
+                        Mind. 80%
+                    </div>
+
                 </div>
 
                 <div style={styles.radioWrapper}>
@@ -226,6 +253,12 @@ export const ParametersPage = () => {
 };
 
 const styles = {
+    btmDiv: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     container: {
         display: 'flex',
         backgroundColor: '#F5F5F5',
