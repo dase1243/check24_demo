@@ -118,7 +118,10 @@ export const ParametersPage = () => {
                                 ...styles.radioButton,
                                 borderColor: selectedPower === 'option1' ? '#5B90E7' : '#C3DAFF'
                             }}
-                            onClick={() => setSelectedPower('option1')}
+                            onClick={(event) => {
+                                setSelectedPower('option1')
+                                localStorage.setItem('ecoType', "non-eco");
+                            }}
                         >
                             <img src={RenewIcon} alt="Description" style={styles.imageInsideButton}/>
                         </button>
@@ -131,8 +134,10 @@ export const ParametersPage = () => {
                                 ...styles.radioButton,
                                 borderColor: selectedPower === 'option2' ? '#5B90E7' : '#C3DAFF'
                             }}
-                            onClick={() => setSelectedPower('option2')}
-                        >
+                            onClick={() => {
+                                setSelectedPower('option2')
+                                localStorage.setItem('ecoType', "eco");
+                            }}>
                             <img src={PlanetIcon} alt="Description" style={styles.imageInsideButton}/>
                         </button>
                         Alle Ökotarife
@@ -143,11 +148,13 @@ export const ParametersPage = () => {
                                 ...styles.radioButton,
                                 borderColor: selectedPower === 'option3' ? '#5B90E7' : '#C3DAFF'
                             }}
-                            onClick={() => setSelectedPower('option3')}
-                        >
+                            onClick={() => {
+                                setSelectedPower('option3')
+                                localStorage.setItem('ecoType', "full eco");
+                            }}>
                             <img src={BioIcon} alt="Description" style={styles.imageInsideButton}/>
                         </button>
-                        Nur Öko Nachhaltig
+                        True Öko
                     </div>
                 </div>
 

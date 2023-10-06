@@ -8,7 +8,7 @@ import OfferItem from "./OfferItem";
 import axios from "axios";
 import {data} from "./data";
 
-function getBestOffers(data, myPostcode) {
+function getBestOffers(data, myPostcode, ecoType) {
     // Step 1: Flatten the array
     let flattened = [];
     data.forEach(provider => {
@@ -23,14 +23,19 @@ function getBestOffers(data, myPostcode) {
         });
     });
 
-    console.log(`myPostcode: ${myPostcode}`)
+
+    // flattened = flattened.filter()
+
     // Step 3: Sort by postcode proximity
     flattened.sort((a, b) => {
         const diffA = Math.abs(myPostcode - a.providerZip);
         const diffB = Math.abs(myPostcode - b.providerZip);
         return diffA - diffB;
     });
-
+    console.log(`flattened objects: ${JSON.stringify(flattened)}`)
+    console.log(`flattened objects: ${JSON.stringify(flattened)}`)
+    flattened = flattened.filter(value => value.type_offer === ecoType)
+    console.log(`flattened: ${JSON.stringify(flattened)}`)
     // Step 2: Sort by price
     flattened.sort((a, b) => a.satisfaction - b.satisfaction);
 
@@ -63,8 +68,9 @@ export const OffersLoadingPage = () => {
 
         console.log("data:", data)
 
+        const ecoType = localStorage.getItem('ecoType') || '';
         const postcode = localStorage.getItem('postcode') || 1234;
-        let bestOffers = getBestOffers(data, Number(postcode));
+        let bestOffers = getBestOffers(data, Number(postcode), ecoType);
 
         console.log("bestOffers:", bestOffers)
         setBestOffers(bestOffers);

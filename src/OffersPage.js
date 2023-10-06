@@ -3,7 +3,7 @@ import React from "react";
 import {useState, useEffect} from 'react';
 import './index.css';
 import {useNavigate} from "react-router-dom";
-import OfferItem from "./OfferItem";
+import {OfferItem, OfferItemGrey} from "./OfferItem";
 
 export const OffersPage = () => {
     const navigate = useNavigate();
@@ -90,7 +90,7 @@ export const OffersPage = () => {
                     <div style={styles.offersList}>
                         {/*{Array.from({length: 10}).map((_, index) => (*/}
                         {bestOffers.map((bf, index) => (
-                            <OfferItem
+                            <OfferItemGrey
                                 key={index}
                                 imageUrl="https://avatars.githubusercontent.com/u/97165289"
                                 providerName={bf.providerName}

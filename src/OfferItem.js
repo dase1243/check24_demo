@@ -7,7 +7,17 @@ const styles = {
         borderRadius: 16,
         padding: '16px',
         margin: '0 auto',
-        width: '90%',
+        width: '80%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    mainContainerGrey: {
+        backgroundColor: '#B1BBB2',
+        borderRadius: 16,
+        padding: '16px',
+        margin: '0 auto',
+        width: '80%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -25,8 +35,10 @@ const styles = {
     smallDiv: {
         flex: 1,
         display: 'flex',
+        marginLeft: '15px',
+        marginTop: '-15px',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'start',
         justifyContent: 'space-between',
     },
     iconAndText: {
@@ -56,26 +68,47 @@ const styles = {
     },
 };
 
-function OfferItem({ imageUrl, providerName, recommendation, renewable, tariffName, price}) {
+
+export function OfferItemGrey({ imageUrl, providerName, recommendation, renewable, tariffName, price}) {
     return (
-        <div style={styles.mainContainer}>
+        <div style={styles.mainContainerGrey}>
             <div style={styles.innerContainer}>
                 <div style={{ ...styles.imageContainer, backgroundImage: `url(${imageUrl})` }}></div>
                 <div style={styles.smallDiv}>
-                    <p>{providerName}</p>
-                    <p>{recommendation}</p>
-                    <p>{renewable}</p>
-                </div>
-                <div style={styles.smallDiv}>
-                    <p>{price}€</p>
+                    <p><b>Provider:</b> {providerName}</p>
+                    <p><b>{recommendation}%</b> recommendation</p>
+                {/*</div>*/}
+                {/*<div style={styles.smallDiv}>*/}
+                    <p><b>Type:</b> {renewable}</p>
+                    <p><b>Price:</b> {price}€</p>
                 </div>
             </div>
             <div style={styles.footer}>
-                <p>{tariffName}</p>
+                <p><b>Tariff name:</b> {tariffName}</p>
                 <button style={styles.button}>Continue</button>
             </div>
         </div>
     );
 }
 
-export default OfferItem;
+export function OfferItem({ imageUrl, providerName, recommendation, renewable, tariffName, price}) {
+    return (
+        <div style={styles.mainContainer}>
+            <div style={styles.innerContainer}>
+                <div style={{ ...styles.imageContainer, backgroundImage: `url(${imageUrl})` }}></div>
+                <div style={styles.smallDiv}>
+                    <p><b>Provider:</b> {providerName}</p>
+                    <p><b>{recommendation}%</b> recommendation</p>
+                {/*</div>*/}
+                {/*<div style={styles.smallDiv}>*/}
+                    <p><b>Type:</b> {renewable}</p>
+                    <p><b>Price:</b> {price}€</p>
+                </div>
+            </div>
+            <div style={styles.footer}>
+                <p><b>Tariff name:</b> {tariffName}</p>
+                <button style={styles.button}>Continue</button>
+            </div>
+        </div>
+    );
+}
