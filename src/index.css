@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    font-family: -apple-system, Verdana,Arial,Helvetica,sans-serif;
+}
+
+code {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+@keyframes loadAnimation {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
